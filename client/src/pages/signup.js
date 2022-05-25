@@ -4,6 +4,9 @@ import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
 import { ADD_USER } from "../gql/mutations";
 import styled from "styled-components";
+import { TextField } from "@mui/material";
+import Logo_Small from "../assets/Logo_Small.png";
+import PlatformButtons from "../components/platformButtons";
 
 const StyledSignupP = styled.p`
   font-family: "DM Sans", sans-serif;
@@ -16,6 +19,11 @@ const StyledSignupP = styled.p`
 
 const StyledPaddingDiv = styled.div`
   padding: 20px;
+`;
+
+const ButtonText = styled.p`
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: bold;
 `;
 
 const StyledCanbanLoader = styled.img`
@@ -53,10 +61,10 @@ const StyledSignupBreadcrumb = styled.p`
 const StyledButton = styled.button`
   background-color: #ffc3c3;
   border-radius: 30px;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 200;
   letter-spacing: 1px;
-  padding: 15px;
+  padding: 10px;
   outline: 0;
   border: 1px solid #ffc3c3;
   cursor: pointer;
@@ -95,7 +103,7 @@ const StyledWhiteContainer = styled.div`
 `;
 
 function Signup(props) {
-  document.body.style = "background-image: url('https://i.imgur.com/EIUl7II.png'); background-color: #FFC3C3 ";
+  document.body.style = `background-image: url(${Logo_Small}); background-color: #EBDEFC`;
   const [formState, setFormState] = useState({ firstName: "", lastName: "", email: "", password: "" });
   const [addUser] = useMutation(ADD_USER);
   var awaitingFormSubmit = false;
@@ -130,6 +138,8 @@ function Signup(props) {
       style={{
         display: "flex",
         justifyContent: "center",
+        alignItems: "Center",
+        height: "100vh",
       }}
     >
       <StyledWhiteContainer>
@@ -165,8 +175,11 @@ function Signup(props) {
                 <Link to="/login"> Click here to login!</Link>
               </span>
             </StyledSignupBreadcrumb>
+
+            <PlatformButtons></PlatformButtons>
+
             <StyledSignupP>First Name</StyledSignupP>
-            <input
+            <TextField
               required
               name="firstName"
               id="firstName"
@@ -177,7 +190,7 @@ function Signup(props) {
             />
 
             <StyledSignupP>Last Name</StyledSignupP>
-            <input
+            <TextField
               required
               id="lastName"
               name="lastName"
@@ -188,7 +201,7 @@ function Signup(props) {
             />
 
             <StyledSignupP>Email</StyledSignupP>
-            <input
+            <TextField
               required
               id="email"
               name="email"
@@ -200,7 +213,7 @@ function Signup(props) {
             />
 
             <StyledSignupP>Password</StyledSignupP>
-            <input
+            <TextField
               id="password"
               label="Password"
               name="password"

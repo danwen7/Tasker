@@ -7,6 +7,8 @@ import Signup from "./pages/signup";
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Dashboard from "./pages/dashboard";
+import DashboardSidebar from "./components/dashboardSidebar";
+import Login from "./pages/login";
 
 const httpLink = createHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -34,7 +36,9 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/nav" element={<Nav />} />
         <Route exact path="/signup" element={<Signup />} />
+        <Route exact path="/login" element={<Login />} />
         <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route exact path="/sidebar" element={<DashboardSidebar />} />
       </Routes>
     </ApolloProvider>
   );

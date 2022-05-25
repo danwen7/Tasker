@@ -1,10 +1,9 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const QUERY_USER = gql`
   {
     user {
       email
-      githubUser
       firstName
       lastName
       createdAt
@@ -13,20 +12,20 @@ export const QUERY_USER = gql`
 `;
 
 export const GET_WORKSPACES = gql`
-{
-  getWorkspaces {
-    adminUser
-    title
-    repositoryName
-    updatedAt
-    id
-    workspaceColor
+  {
+    getWorkspaces {
+      adminUser
+      title
+      repositoryName
+      updatedAt
+      id
+      workspaceColor
+    }
   }
-}
 `;
 
-export const FETCH_WORKSPACE_NAME = gql `
-  query getWorkspaceName($workspaceID: ID){
+export const FETCH_WORKSPACE_NAME = gql`
+  query getWorkspaceName($workspaceID: ID) {
     getWorkspaceName(workspaceID: $workspaceID) {
       title
       repositoryName
@@ -34,8 +33,8 @@ export const FETCH_WORKSPACE_NAME = gql `
   }
 `;
 
-export const FETCH_CARDS = gql `
-  query getWorkspaceCards($workspaceID: ID){
+export const FETCH_CARDS = gql`
+  query getWorkspaceCards($workspaceID: ID) {
     getWorkspaceCards(workspaceID: $workspaceID) {
       id
       title
@@ -56,8 +55,7 @@ export const FETCH_CARDS = gql `
 //   }
 // `;
 
-
-export const FETCH_ALL_CARDS = gql `
+export const FETCH_ALL_CARDS = gql`
   query {
     getAllCards {
       id
