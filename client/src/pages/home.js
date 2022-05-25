@@ -3,6 +3,7 @@ import styled from "styled-components";
 import logo from "../assets/Logo.JPG";
 import Nav from "../components/nav";
 import CtaImage from "../assets/Isometric.png";
+import Example from "../assets/Example.png";
 
 document.body.style = "background: #FEF8F3;";
 
@@ -76,6 +77,31 @@ const StyledBottomSubtext = styled.h2`
   margin-top: 60px;
 `;
 
+const StyledExampleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 60px;
+`;
+
+const StyledExampleImage = styled.img`
+  width: 70%;
+  height: auto;
+  display: block;
+  z-index: 5;
+  -webkit-box-shadow: 0px 11px 15px -3px rgba(93, 93, 93, 0.5);
+  box-shadow: 0px 11px 15px -3px rgba(93, 93, 93, 0.5);
+`;
+
+const StyledExampleSubtextContainer = styled.div`
+  width: 100%;
+  min-height: 20vh;
+  background-color: white;
+  margin-top: -120px;
+  z-index: 0;
+`;
+
 const Home = function () {
   return (
     <div style={{ backgroundColor: "#FEF8F3" }}>
@@ -93,11 +119,14 @@ const Home = function () {
         </CtaDiv>
       </CtaParent>
       <StyledBottomSubtext>
-        Watch your productivity go from{" "}
-        <span style={{ color: "#C6B9FF" }}>zero</span> to{" "}
+        Watch your productivity go from <span style={{ color: "#C6B9FF" }}>zero</span> to{" "}
         <span style={{ fontWeight: "bold", color: "#781DF1" }}>hero</span>.{" "}
         <span style={{ textDecoration: "underline" }}>Learn more</span>
       </StyledBottomSubtext>
+      <StyledExampleContainer>
+        <StyledExampleImage src={Example} />
+        <StyledExampleSubtextContainer></StyledExampleSubtextContainer>
+      </StyledExampleContainer>
     </div>
   );
 };
