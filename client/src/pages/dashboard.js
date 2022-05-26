@@ -1,17 +1,194 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import Auth from "../utils/auth";
 import styled from "styled-components";
-import logo from "../assets/Logo.JPG";
-import Nav from "../components/nav";
-import CtaImage from "../assets/Isometric.png";
-import Example from "../assets/Example.png";
 import DashboardSidebar from "../components/dashboardSidebar";
+import ProjectCard from "../components/ProjectCards";
+import { QUERY_USER, GET_WORKSPACES } from "../gql/queries";
+import { DELETE_WORKSPACE } from "../gql/mutations";
+import { useQuery, useMutation } from "@apollo/client";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { IconButton } from "@mui/material";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import Fade from "@mui/material/Fade";
+import Backdrop from "@mui/material/Backdrop";
+import AddWorkspaceContainer from "../components/AddRoomContainer";
+import MobileBar from "../components/MobileBar";
+import { useMediaQuery } from "react-responsive";
+import NewRoom from "../components/AsyncCreate";
 
-const Dashboard = function () {
-  return (
-    <div>
-      <DashboardSidebar></DashboardSidebar>
-    </div>
-  );
+const StyledDashboardContainer = styled.div`
+  margin-left: ${(props) => props.width + 20 + "px"};
+`;
+
+const StyledHeadings = styled.h2`
+  font-family: "DM Sans", sans-serif;
+  font-size: 25px;
+  color: rgb(31, 28, 46);
+  font-weight: 700;
+  opacity: 0.7;
+  margin-bottom: 2%;
+`;
+
+const StyledContainingDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 30px;
+  padding: 50px;
+  flex-grow: 1;
+  margin-right: 50px;
+  @media (max-width: 550px) {
+    padding: 0px;
+    padding-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+`;
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  minWidth: 400,
+  bgcolor: "background.paper",
+  borderRadius: "30px",
+  p: 4,
+  paddingBottom: "50px",
+  display: "flex",
+  justifyContent: "center",
+};
+
+const StyledParentDiv = styled.div`
+  margin-top: 60px;
+
+  @media (max-width: 500px) {
+    margin-top: 0px;
+  }
+`;
+
+const Dashboard = () => {
+  function getBaseURL() {
+    return (
+      window.location.protocol +
+      "//" +
+      window.location.hostname +
+      (window.location.port && ":" + window.location.port) +
+      "/"
+    );
+  }
+  const [sidebarWidth, setSidebarWidth] = useState("10px");
+  const sidebarRef = useRef();
+  const { loading, error, data, refetch } = useQuery(GET_WORKSPACES);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [deleteWorkspace] = useMutation(DELETE_WORKSPACE);
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 500px)" });
+
+  useEffect(() => {
+    const updateWidth = () => {
+      setSidebarWidth(sidebarRef.current.offsetWidth);
+    };
+
+    window.addEventListener("resize", updateWidth);
+    updateWidth();
+
+    return () => {
+      window.removeEventListener("resize", updateWidth);
+    };
+  }, []);
+
+  const mobileStyle = function (boolean) {
+    if (boolean == true) {
+      return { transform: "scale(0.6)" };
+    } else {
+      return {};
+    }
+  };
+
+  if (Auth.loggedIn()) {
+    return (
+      <StyledContainingDiv>
+        <DashboardSidebar parentRef={sidebarRef} />
+        <StyledDashboardContainer width={sidebarWidth}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <StyledContainingDiv>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  flexDirection: "row",
+                }}
+              >
+                <StyledHeadings>Workspaces</StyledHeadings>
+                <IconButton onClick={handleOpen}>
+                  <AddCircleOutlineOutlinedIcon
+                    sx={{
+                      transform: "scale(1.5)",
+                    }}
+                    fontSize="large"
+                  />
+                </IconButton>
+                <Modal
+                  aria-labelledby="transition-modal-title"
+                  aria-describedby="transition-modal-description"
+                  open={open}
+                  onClose={handleClose}
+                  closeAfterTransition
+                  BackdropComponent={Backdrop}
+                  BackdropProps={{
+                    timeout: 500,
+                  }}
+                >
+                  <Fade in={open}>
+                    <Box sx={style}>
+                      <NewRoom
+                        isTabletOrMobile={isTabletOrMobile}
+                        modalClose={handleClose}
+                        callback={() => refetch()}
+                      />
+                    </Box>
+                  </Fade>
+                </Modal>
+              </div>
+
+              {data &&
+                data.getWorkspaces.map((workspace) => {
+                  return (
+                    <ProjectCard
+                      title={workspace.title}
+                      repoName={workspace.repositoryName}
+                      userName={"sooova"}
+                      updatedAt={parseInt(workspace.updatedAt)}
+                      workspaceID={workspace.id}
+                      workspaceColor={workspace.workspaceColor}
+                      callback={() => refetch()}
+                      editButton={true}
+                    />
+                  );
+                })}
+              <AddWorkspaceContainer handleOpen={handleOpen} />
+              {loading ? "loading" : ""}
+            </StyledContainingDiv>
+          </div>
+        </StyledDashboardContainer>
+        <MobileBar />
+      </StyledContainingDiv>
+    );
+  } else {
+    window.location.replace(`${getBaseURL()}`);
+  }
 };
 
 export default Dashboard;

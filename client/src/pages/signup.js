@@ -60,7 +60,7 @@ const StyledSignupBreadcrumb = styled.p`
 
 const StyledButton = styled.button`
   background-color: #ffc3c3;
-  border-radius: 30px;
+  border-radius: 12px;
   font-size: 15px;
   font-weight: 200;
   letter-spacing: 1px;
