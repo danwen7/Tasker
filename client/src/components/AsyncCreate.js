@@ -231,43 +231,7 @@ export default function AsyncWorkspaceCreate(props) {
               <StyledDot id="lightYellow" onClick={handleColorChange} bg={"#FFEFC6"} />
             </div>
           </div>
-          <div>
-            <StyledRightP>{renderAsync == true ? "Select Repository" : "No Github User Saved"}</StyledRightP>
-            {renderAsync == true && (
-              <Autocomplete
-                id="asynchronous-demo"
-                name="repo"
-                sx={{ width: 300 }}
-                open={open}
-                onOpen={() => {
-                  setOpen(true);
-                }}
-                onClose={(event) => {
-                  setOpen(false);
-                  handleChangeRepo(event);
-                }}
-                isOptionEqualToValue={(option, value) => option.name === value.name}
-                getOptionLabel={(option) => option.name}
-                options={options}
-                loading={loading}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Link a repository"
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <React.Fragment>
-                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </React.Fragment>
-                      ),
-                    }}
-                  />
-                )}
-              />
-            )}
-          </div>
+          <div></div>
         </div>
         <div
           style={{
